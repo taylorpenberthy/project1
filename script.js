@@ -3,6 +3,7 @@
 var currentQuestionIndex;
 var correct = 0;
 var question, choice, choices;
+var userScore = 0;
 // Create an array of the user's selection to check against the correct choice
 var selections = [];
 // class Quiz(questions) {
@@ -141,5 +142,6 @@ function clickEvent(event) {
 }
     
 function addScore(num) {
-    score.innerText = num;
+    userScore += num;
+    score.innerText = userScore;
 }
