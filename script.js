@@ -1,5 +1,5 @@
 // Trivia Game
-
+// Sources: https://css-tricks.com/restart-css-animation/
 var currentQuestionIndex;
 var correct = 0;
 var question, choice, choices;
@@ -12,7 +12,7 @@ var selections = [];
 //     this.questionIndex = 0;
 // }
 function get(x) {
-    return document.getElementById(x);
+  return document.getElementById(x);
 }
 const openButton = get("open");
 const modal = get("modal");
@@ -21,6 +21,11 @@ var askQuestion = get("question");
 var getChoices = get("choices");
 const listChoices = get("listChoices");
 const score = get("score");
+const resultScreen = get("overlay");
+const results = get("results");
+const nextButton = get("#nextBtn");
+var textbox = get("textbox");
+const iconBox = get('boxWithIcons');
 console.log(listChoices);
 
 const openBox = () => {
@@ -36,15 +41,11 @@ close.addEventListener("click", closeBox);
 const startBtn = get("start");
 const hideP = get("hide");
 function initialize() {
-    currentQuestionIndex = 0;
-  startBtn.innerHTML = 'Next';
-  hideP.style.display = 'none';
-  nextBtn = document.createElement("button");
-  nextBtn.classList.add("next");
-  startBtn.appendChild(nextBtn);
+  currentQuestionIndex = 0;
+  startBtn.style.display = 'none';
+  hideP.style.display = "none";
   displayQuestion();
-  }
-
+}
 
 // Create a class called Question that will use the questions that I produce
 class Question {
@@ -87,61 +88,129 @@ var questions = [
     "Which of the following is Taylor's dog?",
     ["Frida", "Jack", "Snickers", "Lucy", "Taylor"],
     "Frida"
+  ),
+  new Question(
+    "What is Taylor's number one hard skill?",
+    [
+      "Using a jackhammer",
+      "Problem-solving",
+      "Technical Writing",
+      "Microsoft Word"
+    ],
+    "Problem-solving"
+  ),
+  new Question(
+    "What is Taylor's strongest soft skill?",
+    [
+      "Timeliness",
+      "Patience",
+      "Communication",
+      "Leadership",
+      "All of the Above"
+    ],
+    "All of the Above"
   )
 ];
 
-
-
 function correctAnswer(index) {
-    index = currentQuestionIndex;
+  index = currentQuestionIndex;
   return questions[index].answer;
-    
 }
 
 function clearChoices() {
-    let child = listChoices.firstElementChild;
-    while (child) {
-        listChoices.removeChild(child);
-        child = listChoices.firstElementChild;
-    }
+  let child = listChoices.firstElementChild;
+  while (child) {
+    listChoices.removeChild(child);
+    child = listChoices.firstElementChild;
+  }
 }
 
-function displayQuestion () {
-    if (currentQuestionIndex >= questions.length) {
-        askQuestion.innerHTML = `You got ${correct} of ${questions.length} questions correct.`
-    }
-    askQuestion.innerHTML = questions[currentQuestionIndex].text;
-    displayChoices();
+function displayQuestion() {
+  if (currentQuestionIndex == questions[questions.length - 1]) {
+      alert('game over')
+    askQuestion.innerHTML = `You got ${correct} of ${questions.length} questions correct.`;
+  }else if ((currentQuestionIndex + 1) == 7) {
+      endGame();
+  }
+  else {
+        askQuestion.innerHTML = `Question ${currentQuestionIndex + 1} of ${questions.length}: `;
+        askQuestion.innerHTML += questions[currentQuestionIndex].text;
+        displayChoices();
 }
-
+}
 
 function displayChoices() {
-    getChoices.style.display = 'none'
-    let theseQs = questions[currentQuestionIndex].choices;
-    for (let i = 0; i < theseQs.length; i++) {
-        option = document.createElement("div");
-        option.classList.add('choice');
-        option.innerHTML = theseQs[i];
-        listChoices.appendChild(option);
-        clickEvent(option);
-}
+  getChoices.style.display = "none";
+  let theseQs = questions[currentQuestionIndex].choices;
+  for (let i = 0; i < theseQs.length; i++) {
+    option = document.createElement("div");
+    option.classList.add("choice");
+    option.innerHTML = theseQs[i];
+    listChoices.appendChild(option);
+    clickEvent(option);
+  }
 }
 
 function clickEvent(event) {
-    event.addEventListener("click", function(e) {
-        e = event;
-        if (e.innerHTML == correctAnswer(currentQuestionIndex)) {
-            console.log("Correct answer!");
-            addScore(10);
-            clearChoices();
-            currentQuestionIndex++;
-            setInterval(displayQuestion(), 5000);
-        }
-    })
-    
+  event.addEventListener("click", function(e) {
+    e = event;
+    if (e.innerHTML == correctAnswer(currentQuestionIndex)) {
+     showResult('win');
+      addScore(10);
+      clearChoices();
+      currentQuestionIndex++;
+      setTimeout(displayQuestion(), 5000);
+    }else {
+        showResult('lose');
+        e.style.backgroundColor = 'red';
+        clearChoices();
+        currentQuestionIndex++;
+        setTimeout(displayQuestion(), 10000);
+    }
+  });
 }
-    
+
 function addScore(num) {
-    userScore += num;
-    score.innerText = userScore;
+  userScore += num;
+  score.innerText = userScore;
 }
+
+function showResult(outcome) {
+    if (outcome == 'win') {
+        resultScreen.style.display = 'block';
+        results.innerHTML = `Correct answer! Click anywhere to continue. `;
+        results.style.display = 'block';
+        let myImg = document.images[currentQuestionIndex];
+         myImg.style.display = 'inline-block';
+         myImg.classList.add('images');
+    }if (outcome == 'lose') {
+        resultScreen.style.display = 'block';
+        results.style.display = 'block';
+        results.innerHTML = `Sorry, that is incorrect.  The correct answer is ${correctAnswer(currentQuestionIndex)}. Click anywhere to continute`;
+        // nextButton.style.display = 'block';
+    }
+}
+
+resultScreen.addEventListener("click", function(e) {
+    e.preventDefault();
+    textbox.classList.remove('bounce');
+    // Allows the animation to occur more than once (via CSS tricks)
+    void textbox.offsetWidth;
+    resultScreen.style.display = 'none';
+    textbox.classList.add('bounce');
+})
+
+function endGame() {
+    resultScreen.style.display = 'block';
+    results.innerHTML = `Thanks for playing! You answered ${userScore / 10} questions correctly!`;
+    resultScreen.classList.add('winning');
+    resultScreen.addEventListener("click", function(e) {
+        e.preventDefault();
+        askQuestion.innerHTML = `Thanks for playing Taylor's Trivia!`;
+
+    })
+}
+
+
+var x = document.images[0];
+console.log(x);
