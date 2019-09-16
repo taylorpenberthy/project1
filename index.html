@@ -7,7 +7,7 @@
     <title>Taylor's Trivia</title>
     <link rel="icon" href="T.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Chilanka|Cinzel:700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway|Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
     <button class="myButtons" id="open">About the Game</button>
     <div id="modal">
         <div id="boxWithIcons">
-            <h3>Taylor in icons</h3>
+            <h3>Taylor in Icons</h3>
             <div class="myImages">
                 <img src="nyc.jpg" alt="NYC" id="nyc" style="display: none; max-width: 50%; height: auto;">
                 <img src="wisco.jpg" alt="wisco" id="wisco" style="display: none; max-width: 50%; height: auto;">
@@ -32,7 +32,6 @@
         <div id="textbox">
             <div id="overlay" style="display: none;">  
                 <div id="results"> </div>
-                <button id="nextBtn">Next</a>
             </div>
             <h2>Welcome to Taylor's Trivia!</h2>
                 <p id="question">This is a game that tests your knowledge of how well you know Taylor.</p>
@@ -44,6 +43,9 @@
                         <button class="startGame" value="Start Game"type="button" id="start" onclick="initialize()">Start Game</button>
                 </div>
                 <div id="modal-footer">
+                    <div id="myProgress">
+                        <div id="myBar"></div>
+                    </div>
                     <h3>Score: </h3>
                     <p id="score">000</p>
                     <button class="myButtons"id="close" href="#">Close</button>

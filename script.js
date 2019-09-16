@@ -17,7 +17,6 @@ const listChoices = get("listChoices");
 const score = get("score");
 const resultScreen = get("overlay");
 const results = get("results");
-const nextButton = get("#nextBtn");
 var textbox = get("textbox");
 const iconBox = get("boxWithIcons");
 console.log(listChoices);
@@ -105,24 +104,31 @@ var questions = [
     "All of the Above"
   ),
   new Question(
-      "What did Taylor study in school?",
-      ["Finance", "Agriculture", "Computer Science", "Kinesiology", "English"],
-      "Kinesiology"
-  ),
-  new Question( 
-      "What is Taylor's favorite condiment?",
-      ["Ketchup", "Old Bay", "Mustard", "Frank's Hot Sauce", "Sriracha", "Tabasco"],
-      "Frank's Hot Sauce"
+    "What did Taylor study in school?",
+    ["Finance", "Agriculture", "Computer Science", "Kinesiology", "English"],
+    "Kinesiology"
   ),
   new Question(
-      "What sport did Taylor used to be pretty decent at?",
-      ["Football", "Soccer", "Basketball", "Tennis", "Softball"],
-      "Basketball"
+    "What is Taylor's favorite condiment?",
+    [
+      "Ketchup",
+      "Old Bay",
+      "Mustard",
+      "Frank's Hot Sauce",
+      "Sriracha",
+      "Tabasco"
+    ],
+    "Frank's Hot Sauce"
   ),
   new Question(
-      "What is Taylor's favorite hobby?",
-      ["Knitting", "Crocheting", "Golfing", "Baking", "Drawing", "Writing poems"],
-      "Baking"
+    "What sport did Taylor used to be pretty decent at?",
+    ["Football", "Soccer", "Basketball", "Tennis", "Softball"],
+    "Basketball"
+  ),
+  new Question(
+    "What is Taylor's favorite hobby?",
+    ["Knitting", "Crocheting", "Golfing", "Baking", "Drawing", "Writing poems"],
+    "Baking"
   )
 ];
 
@@ -182,6 +188,7 @@ function clickEvent(event) {
       currentQuestionIndex++;
       setTimeout(displayQuestion(), 10000);
     }
+    moveBar(10);
   });
 }
 
@@ -196,7 +203,7 @@ function showResult(outcome) {
     results.innerHTML = `Correct answer! Click anywhere to continue. `;
     results.style.display = "block";
     let myImg = document.images[currentQuestionIndex];
-    myImg.style.display = "inline-block";
+    myImg.style.display = "block";
     myImg.classList.add("images");
   }
   if (outcome == "lose") {
@@ -205,7 +212,6 @@ function showResult(outcome) {
     results.innerHTML = `Sorry, that is incorrect.  The correct answer is ${correctAnswer(
       currentQuestionIndex
     )}. Click anywhere to continute`;
-    // nextButton.style.display = 'block';
   }
 }
 
@@ -225,6 +231,43 @@ function endGame() {
   resultScreen.classList.add("winning");
   resultScreen.addEventListener("click", function(e) {
     e.preventDefault();
-    askQuestion.innerHTML = `Thanks for playing Taylor's Trivia!`;
+    if (userScore >= 60) {
+      askQuestion.innerHTML = `Thanks for playing Taylor's Trivia, `;
+      askQuestion.innerHTML += `It looks like you know her pretty well! If you want to learn more about Taylor, click the button below to go to her LinkedIn!`;
+      readMoreAboutTaylor();
+    } else {
+      askQuestion.innerHTML = `Thanks for playing Taylor's Trivia.  You scored less than 60 points, so your Taylor knowledge needs some work.  Click below to read a short description of Taylor!`;
+      readMoreAboutTaylor();
+    }
   });
+}
+
+// Link to linkedin profile if user scores less than 60 points
+function readMoreAboutTaylor() {
+  var readHereBtn = document.createElement("button");
+  readHereBtn.classList.add("readMore");
+  readHereBtn.innerHTML = "Who is Taylor?";
+  askQuestion.appendChild(readHereBtn);
+  readHereBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    document.location.href =
+      "https://www.linkedin.com/in/taylor-penberthy-b0628a140/";
+  });
+}
+
+// Progress bar
+var width = 0;
+function moveBar(num) {
+  var elem = get("myBar");
+  width += num;
+  if (width >= 100) {
+    elem.style.width = width + "%";
+    elem.innerHTML = `100%`;
+    elem.style.backgroundColor = "green";
+    elem.style.color = "white";
+  } else {
+    console.log(width);
+    elem.style.width = width + "%";
+    elem.innerHTML = width * 1 + "%";
+  }
 }
