@@ -5,12 +5,6 @@ var correct = 0;
 var question, choice, choices;
 var userScore = 0;
 // Create an array of the user's selection to check against the correct choice
-var selections = [];
-// class Quiz(questions) {
-//     this.score = 0;
-//     this.questions = questions;
-//     this.questionIndex = 0;
-// }
 function get(x) {
   return document.getElementById(x);
 }
@@ -25,7 +19,7 @@ const resultScreen = get("overlay");
 const results = get("results");
 const nextButton = get("#nextBtn");
 var textbox = get("textbox");
-const iconBox = get('boxWithIcons');
+const iconBox = get("boxWithIcons");
 console.log(listChoices);
 
 const openBox = () => {
@@ -42,7 +36,7 @@ const startBtn = get("start");
 const hideP = get("hide");
 function initialize() {
   currentQuestionIndex = 0;
-  startBtn.style.display = 'none';
+  startBtn.style.display = "none";
   hideP.style.display = "none";
   displayQuestion();
 }
@@ -109,6 +103,26 @@ var questions = [
       "All of the Above"
     ],
     "All of the Above"
+  ),
+  new Question(
+      "What did Taylor study in school?",
+      ["Finance", "Agriculture", "Computer Science", "Kinesiology", "English"],
+      "Kinesiology"
+  ),
+  new Question( 
+      "What is Taylor's favorite condiment?",
+      ["Ketchup", "Old Bay", "Mustard", "Frank's Hot Sauce", "Sriracha", "Tabasco"],
+      "Frank's Hot Sauce"
+  ),
+  new Question(
+      "What sport did Taylor used to be pretty decent at?",
+      ["Football", "Soccer", "Basketball", "Tennis", "Softball"],
+      "Basketball"
+  ),
+  new Question(
+      "What is Taylor's favorite hobby?",
+      ["Knitting", "Crocheting", "Golfing", "Baking", "Drawing", "Writing poems"],
+      "Baking"
   )
 ];
 
@@ -127,16 +141,17 @@ function clearChoices() {
 
 function displayQuestion() {
   if (currentQuestionIndex == questions[questions.length - 1]) {
-      alert('game over')
+    alert("game over");
     askQuestion.innerHTML = `You got ${correct} of ${questions.length} questions correct.`;
-  }else if ((currentQuestionIndex + 1) == 7) {
-      endGame();
+  } else if (currentQuestionIndex + 1 > questions.length) {
+    endGame();
+  } else {
+    askQuestion.innerHTML = `Question ${currentQuestionIndex + 1} of ${
+      questions.length
+    }: `;
+    askQuestion.innerHTML += questions[currentQuestionIndex].text;
+    displayChoices();
   }
-  else {
-        askQuestion.innerHTML = `Question ${currentQuestionIndex + 1} of ${questions.length}: `;
-        askQuestion.innerHTML += questions[currentQuestionIndex].text;
-        displayChoices();
-}
 }
 
 function displayChoices() {
@@ -155,17 +170,17 @@ function clickEvent(event) {
   event.addEventListener("click", function(e) {
     e = event;
     if (e.innerHTML == correctAnswer(currentQuestionIndex)) {
-     showResult('win');
+      showResult("win");
       addScore(10);
       clearChoices();
       currentQuestionIndex++;
       setTimeout(displayQuestion(), 5000);
-    }else {
-        showResult('lose');
-        e.style.backgroundColor = 'red';
-        clearChoices();
-        currentQuestionIndex++;
-        setTimeout(displayQuestion(), 10000);
+    } else {
+      showResult("lose");
+      e.style.backgroundColor = "red";
+      clearChoices();
+      currentQuestionIndex++;
+      setTimeout(displayQuestion(), 10000);
     }
   });
 }
@@ -176,41 +191,40 @@ function addScore(num) {
 }
 
 function showResult(outcome) {
-    if (outcome == 'win') {
-        resultScreen.style.display = 'block';
-        results.innerHTML = `Correct answer! Click anywhere to continue. `;
-        results.style.display = 'block';
-        let myImg = document.images[currentQuestionIndex];
-         myImg.style.display = 'inline-block';
-         myImg.classList.add('images');
-    }if (outcome == 'lose') {
-        resultScreen.style.display = 'block';
-        results.style.display = 'block';
-        results.innerHTML = `Sorry, that is incorrect.  The correct answer is ${correctAnswer(currentQuestionIndex)}. Click anywhere to continute`;
-        // nextButton.style.display = 'block';
-    }
+  if (outcome == "win") {
+    resultScreen.style.display = "block";
+    results.innerHTML = `Correct answer! Click anywhere to continue. `;
+    results.style.display = "block";
+    let myImg = document.images[currentQuestionIndex];
+    myImg.style.display = "inline-block";
+    myImg.classList.add("images");
+  }
+  if (outcome == "lose") {
+    resultScreen.style.display = "block";
+    results.style.display = "block";
+    results.innerHTML = `Sorry, that is incorrect.  The correct answer is ${correctAnswer(
+      currentQuestionIndex
+    )}. Click anywhere to continute`;
+    // nextButton.style.display = 'block';
+  }
 }
 
 resultScreen.addEventListener("click", function(e) {
-    e.preventDefault();
-    textbox.classList.remove('bounce');
-    // Allows the animation to occur more than once (via CSS tricks)
-    void textbox.offsetWidth;
-    resultScreen.style.display = 'none';
-    textbox.classList.add('bounce');
-})
+  e.preventDefault();
+  textbox.classList.remove("bounce");
+  // Allows the animation to occur more than once (via CSS tricks)
+  void textbox.offsetWidth;
+  resultScreen.style.display = "none";
+  textbox.classList.add("bounce");
+});
 
 function endGame() {
-    resultScreen.style.display = 'block';
-    results.innerHTML = `Thanks for playing! You answered ${userScore / 10} questions correctly!`;
-    resultScreen.classList.add('winning');
-    resultScreen.addEventListener("click", function(e) {
-        e.preventDefault();
-        askQuestion.innerHTML = `Thanks for playing Taylor's Trivia!`;
-
-    })
+  resultScreen.style.display = "block";
+  results.innerHTML = `Thanks for playing! You answered ${userScore /
+    10} questions correctly!`;
+  resultScreen.classList.add("winning");
+  resultScreen.addEventListener("click", function(e) {
+    e.preventDefault();
+    askQuestion.innerHTML = `Thanks for playing Taylor's Trivia!`;
+  });
 }
-
-
-var x = document.images[0];
-console.log(x);

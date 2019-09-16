@@ -1,10 +1,15 @@
 body {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+    background-image: url("BmrIJU.jpg");
+    max-width: 100%;
+    height: 100%;
 }
-
 h1 {
+    font-family: 'Shadows Into Light', cursive;
+    text-align: center;
+    margin-top: 30%;
+   font-size: 80px;
+}
+h2 {
     font-family: 'Cinzel', serif;
     text-align: center;
     line-height: 120%;
@@ -70,6 +75,7 @@ h3 {
     cursor: pointer;
     margin: 0 auto;
     display: block;
+    position: relative;
 }
 
 .startGame {
@@ -82,17 +88,6 @@ h3 {
     cursor: pointer;
 }
 #start-game {
-    text-align: center;
-}
-
-.next {
-    padding: 3px 3px;
-    background-color: rgb(108, 217, 137);
-    border: none;
-    outline: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
     text-align: center;
 }
 
