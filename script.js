@@ -261,7 +261,7 @@ function readMoreAboutTaylor() {
   readHereBtn.addEventListener("click", function(e) {
     e.preventDefault();
     document.location.href =
-      "https://www.linkedin.com/in/taylor-penberthy-b0628a140/";
+      "https://www.linkedin.com/in/taylorpenberthy";
   });
 }
 
