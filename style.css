@@ -2,11 +2,14 @@ body {
     background-image: linear-gradient(
         rgba(0, 0, 0, 0.5),
         rgba(0, 0, 0, 0.5)
-      ), url("nyccentral.jpg");
+      ), url("myImages/nyccentral.jpg");
     max-width: 100%;
-    height: 100%;
+    height: auto;
+    background-repeat: none;
+    font-family: 'Lora', serif;
 }
 h1 {
+    
     font-family: 'Shadows Into Light', cursive;
     text-align: center;
     color: white;
@@ -14,14 +17,16 @@ h1 {
    font-size: 80px;
 }
 h2 {
-    font-family: 'Cinzel', serif;
+    font-family: 'Montserrat', sans-serif;
     text-align: center;
     line-height: 120%;
+    font-style: oblique;
 }
 #myProgress {
     width: 100%;
     background-color: lightslategray;
     margin-top: 10px;
+    display: none;
 }
 
 #myBar {
@@ -32,6 +37,7 @@ h2 {
     line-height: 30px;
     color: black;
     padding-top: 10px;
+    
 }
 #boxWithIcons {
     float: right;
@@ -49,7 +55,10 @@ h2 {
    border-radius: 15px;
    overflow: auto;
 }
-
+#countdown {
+    float: left;
+    padding-top: 5px;
+}
 #boxWithIcons:hover{
     transform: rotateY(180deg);
     transition: 2s;
@@ -60,6 +69,13 @@ h3 {
 h3, #question, #choices, #hide{
     font-family: 'Raleway', sans-serif;
 }
+
+#question {
+    display: inline;
+    font-style: oblique;
+    border-radius: 30%;
+}
+
 
 #modal {
     z-index: 2;
@@ -165,9 +181,10 @@ h3, #question, #choices, #hide{
 #results {
     display: none;
     text-align: center;
-    margin-top: 70%;
+    margin-top: 60%;
     margin-bottom: auto;
-    font-family: 'Chilanka', cursive;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
 }
 
 

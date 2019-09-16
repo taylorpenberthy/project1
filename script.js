@@ -19,24 +19,31 @@ const resultScreen = get("overlay");
 const results = get("results");
 var textbox = get("textbox");
 const iconBox = get("boxWithIcons");
-console.log(listChoices);
+const progBar = get("myProgress");
+const timer = get('countdown');
+
 
 const openBox = () => {
   modal.style.display = "block";
 };
 
 const closeBox = () => {
+    document.location.href = '';
   modal.style.display = "none";
 };
+
 openButton.addEventListener("click", openBox);
 close.addEventListener("click", closeBox);
 
 const startBtn = get("start");
 const hideP = get("hide");
 function initialize() {
+  clearChoices();
+  startTimer();
   currentQuestionIndex = 0;
   startBtn.style.display = "none";
   hideP.style.display = "none";
+  progBar.style.display = "block";
   displayQuestion();
 }
 
@@ -155,6 +162,7 @@ function displayQuestion() {
     askQuestion.innerHTML = `Question ${currentQuestionIndex + 1} of ${
       questions.length
     }: `;
+    askQuestion.style.backgroundColor = 'rgba(182, 219, 162, 0.8)';
     askQuestion.innerHTML += questions[currentQuestionIndex].text;
     displayChoices();
   }
@@ -168,11 +176,11 @@ function displayChoices() {
     option.classList.add("choice");
     option.innerHTML = theseQs[i];
     listChoices.appendChild(option);
-    clickEvent(option);
+    chooseOption(option);
   }
 }
 
-function clickEvent(event) {
+function chooseOption(event) {
   event.addEventListener("click", function(e) {
     e = event;
     if (e.innerHTML == correctAnswer(currentQuestionIndex)) {
@@ -183,7 +191,6 @@ function clickEvent(event) {
       setTimeout(displayQuestion(), 5000);
     } else {
       showResult("lose");
-      e.style.backgroundColor = "red";
       clearChoices();
       currentQuestionIndex++;
       setTimeout(displayQuestion(), 10000);
@@ -225,6 +232,10 @@ resultScreen.addEventListener("click", function(e) {
 });
 
 function endGame() {
+    timer.style.display = 'none';
+  getChoices.style.display = "none";
+  hideP.style.display = "none";
+  listChoices.style.display = "none";
   resultScreen.style.display = "block";
   results.innerHTML = `Thanks for playing! You answered ${userScore /
     10} questions correctly!`;
@@ -232,8 +243,7 @@ function endGame() {
   resultScreen.addEventListener("click", function(e) {
     e.preventDefault();
     if (userScore >= 60) {
-      askQuestion.innerHTML = `Thanks for playing Taylor's Trivia, `;
-      askQuestion.innerHTML += `It looks like you know her pretty well! If you want to learn more about Taylor, click the button below to go to her LinkedIn!`;
+      askQuestion.innerHTML = `Thanks for playing Taylor's Trivia, it looks like you know her pretty well! If you want to learn more about Taylor, click the button below to go to her LinkedIn!`;
       readMoreAboutTaylor();
     } else {
       askQuestion.innerHTML = `Thanks for playing Taylor's Trivia.  You scored less than 60 points, so your Taylor knowledge needs some work.  Click below to read a short description of Taylor!`;
@@ -271,3 +281,18 @@ function moveBar(num) {
     elem.innerHTML = width * 1 + "%";
   }
 }
+
+
+function startTimer() {
+  var timeLeft = 60;
+  var myTimer = setInterval(function() {
+    get("countdown").innerHTML = `${timeLeft} seconds remaining`;
+    timeLeft -= 1;
+    if (timeLeft <= 0) {
+      clearInterval(myTimer);
+      get("countdown").innerHTML = `TIME IS OUT`;
+      endGame();
+    }
+  }, 1000);
+}
+
